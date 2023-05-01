@@ -1,6 +1,8 @@
 package com.novidades.gestaodeprojetos.view.controller;
 
+import com.novidades.gestaodeprojetos.model.MensagemEmail;
 import com.novidades.gestaodeprojetos.model.Usuario;
+import com.novidades.gestaodeprojetos.service.EmailService;
 import com.novidades.gestaodeprojetos.service.UsuarioService;
 import com.novidades.gestaodeprojetos.view.model.usuario.LoginRequest;
 import com.novidades.gestaodeprojetos.view.model.usuario.LoginResponse;
@@ -22,26 +24,41 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/usuarios")
 public class UsuarioController {
 
-    @Autowired
-    private UsuarioService servicoUsuario; 
+	@Autowired
+	private UsuarioService servicoUsuario;
 
-    @GetMapping
-    public List<Usuario> obterTodos(){
-        return servicoUsuario.obterTodos();
-    }
-    
-    @GetMapping("/{id}")
-    public Optional<Usuario> obterPorId(@PathVariable("id") long id){
-        return servicoUsuario.obterPorId(id);
-    }
+	@Autowired
+	private EmailService servicoEmail;
 
-    @PostMapping
-    public Usuario adicionar(@RequestBody Usuario usuario){
-        return servicoUsuario.adicionar(usuario);
-    }
+	@GetMapping
+	public List<Usuario> obterTodos() {
+		return servicoUsuario.obterTodos();
+	}
 
-    @PostMapping("/login")
-    public LoginResponse login(@RequestBody LoginRequest request){
-        return servicoUsuario.logar(request.getEmail(), request.getSenha());
-    }
+	@GetMapping("/{id}")
+	public Optional<Usuario> obterPorId(@PathVariable("id") long id) {
+		return servicoUsuario.obterPorId(id);
+	}
+
+	@PostMapping
+	public Usuario adicionar(@RequestBody Usuario usuario) {
+		return servicoUsuario.adicionar(usuario);
+	}
+
+	@PostMapping("/login")
+	public LoginResponse login(@RequestBody LoginRequest request) {
+		return servicoUsuario.logar(request.getEmail(), request.getSenha());
+	}
+
+	@PostMapping("/email")
+	public String enviarEmail(@RequestBody MensagemEmail email) {
+		try {
+			servicoEmail.enviar(email);
+			return "Deu certo";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "Deu ruim";
+		}
+
+	}
 }

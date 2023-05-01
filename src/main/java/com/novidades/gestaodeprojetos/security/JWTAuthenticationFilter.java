@@ -40,6 +40,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         Optional<Long> id = jwtService.obterIdDoUuario(token);
 
         // Se não achou o id, é porque o usuario não mandou o token correto.
+        // Tb e necessario esse codigo para tratar quando passar por esse codigo no cadastro do usuario
         if (id.isPresent()) {
 
             // Pego o usuario dono do token pelo seu Id.
