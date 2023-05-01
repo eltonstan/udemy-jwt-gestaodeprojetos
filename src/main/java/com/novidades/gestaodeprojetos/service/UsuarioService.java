@@ -1,15 +1,9 @@
 package com.novidades.gestaodeprojetos.service;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Optional;
-
-import com.novidades.gestaodeprojetos.model.Usuario;
-import com.novidades.gestaodeprojetos.repository.UsuarioRepository;
-import com.novidades.gestaodeprojetos.security.JWTService;
-import com.novidades.gestaodeprojetos.view.model.usuario.LoginResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +12,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.novidades.gestaodeprojetos.model.Usuario;
+import com.novidades.gestaodeprojetos.repository.UsuarioRepository;
+import com.novidades.gestaodeprojetos.security.JWTService;
+import com.novidades.gestaodeprojetos.view.model.usuario.LoginResponse;
 
 @Service
 public class UsuarioService {
@@ -68,11 +67,11 @@ public class UsuarioService {
         Authentication autenticacao = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(email, senha, Collections.emptyList()));
 
-            // Aqui eu passo a nova autenticação para o Spring Security cuidar pra mim.
+        // Aqui eu passo a nova autenticação para o Spring Security ser responsavel
         SecurityContextHolder.getContext().setAuthentication(autenticacao);
 
-        // Gero o token do usuario para devolver a ele.
-        // Bearer acf12ghb3jhujh.asdfresdtuopi36jklo541.ascfhjvvcv
+        // Gero/devolve o token para o usuario
+        // Bearer hashCodeToken
         String token = hederPrefix + jwtService.gerarToken(autenticacao);
 
         Usuario usuario = repositorioUsuario.findByEmail(email).get();

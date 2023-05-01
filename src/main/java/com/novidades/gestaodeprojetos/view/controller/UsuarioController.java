@@ -31,12 +31,12 @@ public class UsuarioController {
     }
     
     @GetMapping("/{id}")
-    public Optional<Usuario> obter(@PathVariable("id") long id){
+    public Optional<Usuario> obterPorId(@PathVariable("id") long id){
         return servicoUsuario.obterPorId(id);
     }
 
     @PostMapping
-    public Usuario adicionar (@RequestBody Usuario usuario){
+    public Usuario adicionar(@RequestBody Usuario usuario){
         return servicoUsuario.adicionar(usuario);
     }
 
