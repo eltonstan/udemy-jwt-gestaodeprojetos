@@ -7,23 +7,27 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 @Entity
-public class Categoria {
+public class Pizza {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "idCategoria")
+	@Column(name = "idPizza")
 	private Long id;
 
 	private String descricao;
 
-	@OneToMany(mappedBy = "categoria")
-	@JsonManagedReference
-	private List<Evento> eventos;
+	@ManyToMany
+	@JoinTable(
+		name = "pizza_ingrediente", 
+		joinColumns = @JoinColumn(name = "idPizza"), 
+		inverseJoinColumns = @JoinColumn(name = "idIngrediente")
+	)
+	private List<Ingrediente> ingredientes;
 
 	public Long getId() {
 		return id;
@@ -41,12 +45,12 @@ public class Categoria {
 		this.descricao = descricao;
 	}
 
-	public List<Evento> getEventos() {
-		return eventos;
+	public List<Ingrediente> getIngredientes() {
+		return ingredientes;
 	}
 
-	public void setEventos(List<Evento> eventos) {
-		this.eventos = eventos;
+	public void setIngredientes(List<Ingrediente> ingredientes) {
+		this.ingredientes = ingredientes;
 	}
 
 }
